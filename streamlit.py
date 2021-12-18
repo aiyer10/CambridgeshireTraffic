@@ -4,7 +4,8 @@ traffic volumes before and during the pandemic
 '''
 
 import pandas as pd
-import streamlit as st
+import streamlit as st 
+import plotly
 import plotly.express as px
 from numpy import cos, sin, arcsin, sqrt
 from math import radians
@@ -52,9 +53,8 @@ if __name__=="__main__":
 
 
 	trafficType = st.sidebar.radio("Select mode of transport", df['Type'].unique())
-	options = st.sidebar.selectbox('Choose sensors', df['Road'].unique())
-
 	df = df[df['Type'].isin([trafficType])]
+	options = st.sidebar.selectbox('Choose sensors', df['Road'].unique())
 
 	# Creating 2 different subsets of dataframes to calculate the distance for the map
 	d1 = df[['Road', 'lat', 'lon']].drop_duplicates()
