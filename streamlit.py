@@ -5,6 +5,7 @@ traffic volumes before and during the pandemic
 
 import pandas as pd
 import streamlit as st 
+import plotly
 import plotly.express as px
 from numpy import cos, sin, arcsin, sqrt
 from math import radians
