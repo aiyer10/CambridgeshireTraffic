@@ -31,6 +31,12 @@ def haversine(row):
 	km = 6367 * c
 	return km
 
+def colorify(d):
+	if d>0.0:
+		return 'blue'
+	else:
+		return 'green'
+
 
 if __name__=="__main__":
 
@@ -87,10 +93,20 @@ if __name__=="__main__":
 	df['from'] = pd.to_datetime(df['from'])
 	df.sort_values(by='from', inplace=True)
 
+
 	# Drawing the folium map
 	mapObj = folium.Map(location=[d1['lat1'], d1['lon1']], zoom_start=12, titles='Traffic sensors within 5km of selection', attr="attribution")
 	folium.Circle(location=[d1['lat1'], d1['lon1']], radius=5000).add_to(mapObj)
 	dist.apply(lambda row:folium.Marker(location=[row["lat2"], row["lon2"]], tooltip=row['to']).add_to(mapObj), axis=1)
+
+
+	#  Coloring the icons based on selection
+	for lat, lng, dist, dest in zip(dist['lat2'].tolist(), dist['lon2'].tolist(), dist['distance'].tolist(), dist['to'].tolist()):
+		if dist > 0.00:
+			folium.Marker(location = [lat, lng], icon = folium.Icon(color='blue'), tooltip=dest).add_to(mapObj)
+		else:
+			folium.Marker(location = [lat, lng], icon = folium.Icon(color='green'), tooltip=dest).add_to(mapObj)
+
 	folium_static(mapObj)
 
 	# Drawing the line chart to allow more granular look
